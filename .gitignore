@@ -1,0 +1,19 @@
+# Binaries
+**/*.out
+**/*.exe
+
+# Objects
+**/*.o
+
+# Library
+**/*.a
+
+# Extras
+**/main.c
+**/ft_testers.c
+**/test.txt
+
+# IDE
+.idea
+.vscode
+.editorconfig
