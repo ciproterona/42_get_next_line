@@ -6,33 +6,51 @@
 /*   By: eroque-d <eroque-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/14 15:21:25 by eroque-d          #+#    #+#             */
-/*   Updated: 2026/06/30 18:49:09 by eroque-d         ###   ########.fr       */
+/*   Updated: 2026/06/30 19:54:57 by eroque-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+static char	*append_buffer(int fd, char *stash, char *buffer, size_t size)
+{
+	int	bytes_read;
+
+	bytes_read = 1;
+	while (bytes_read > 0)
+	{
+		bytes_read = read(fd, buffer, size);
+		if (bytes_read == -1)
+			return (free(stash), NULL);
+		if (bytes_read == 0)
+			break ;
+		buffer[bytes_read] = '\0';
+		stash = ft_strjoin_gnl(stash, buffer);
+		if (!stash)
+			return (NULL);
+		if (ft_strchr(buffer, '\n'))
+			break ;
+	}
+	return (stash);
+}
+
 static char	*read_and_stash(int fd, char *stash)
 {
 	char	*buffer;
-	int		bytes_read;
+	size_t	size;
 
-	buffer = malloc(BUFFER_SIZE + 1);
+	if (stash && ft_strchr(stash, '\n'))
+		return (stash);
+	size = BUFFER_SIZE;
+	if (size == 1)
+		size = 16;
+	buffer = malloc(size + 1);
 	if (!buffer)
-		return (NULL);
-	bytes_read = 1;
-	while (bytes_read > 0 && !ft_strchr(stash, '\n'))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
-		{
-			free(buffer);
-			free(stash);
-			return (NULL);
-		}
-		buffer[bytes_read] = '\0';
-		stash = ft_strjoin_gnl(stash, buffer);
+		free(stash);
+		return (NULL);
 	}
+	stash = append_buffer(fd, stash, buffer, size);
 	free(buffer);
 	return (stash);
 }
@@ -89,6 +107,28 @@ static char	*clean_stash(char *stash)
 	return (buffer);
 }
 
-// char	*get_next_line(int fd)
-// {
-// }
+char	*get_next_line(int fd)
+{
+	static char	*stash;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (!stash)
+	{
+		stash = malloc(1);
+		if (!stash)
+			return (NULL);
+		stash[0] = '\0';
+	}
+	stash = read_and_stash(fd, stash);
+	if (!stash || *stash == '\0')
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
+	line = extract_line(stash);
+	stash = clean_stash(stash);
+	return (line);
+}

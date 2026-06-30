@@ -6,7 +6,7 @@
 /*   By: eroque-d <eroque-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/14 15:21:39 by eroque-d          #+#    #+#             */
-/*   Updated: 2026/06/30 17:30:40 by eroque-d         ###   ########.fr       */
+/*   Updated: 2026/06/30 19:51:16 by eroque-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char	*ft_strjoin_gnl(char *s1, char const *s2)
 	if (!s1)
 	{
 		s1 = malloc(1);
+		if (!s1)
+			return (NULL);
 		s1[0] = '\0';
 	}
 	if (!s2)
