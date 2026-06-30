@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eroque-d <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eroque-d <eroque-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/14 15:21:25 by eroque-d          #+#    #+#             */
-/*   Updated: 2026/06/29 17:38:28 by eroque-d         ###   ########.fr       */
+/*   Updated: 2026/06/30 17:25:51 by eroque-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*read_and_stash(int fd, char *stash)
+static char	*read_and_stash(int fd, char *stash)
 {
 	char	*buffer;
 	int		bytes_read;
@@ -35,6 +35,32 @@ char	*read_and_stash(int fd, char *stash)
 	}
 	free(buffer);
 	return (stash);
+}
+
+static char	*extract_line(char *stash)
+{
+	int		count;
+	int		i;
+	char	*buffer;
+
+	if (!stash || !*stash)
+		return (NULL);
+	count = 0;
+	while (stash[count] && stash[count] != '\n')
+		count++;
+	if (stash[count] == '\n')
+		count++;
+	buffer = malloc(count + 1);
+	if (!buffer)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		buffer[i] = stash[i];
+		i++;
+	}
+	buffer[i] = '\0';
+	return (buffer);
 }
 
 // char	*clean_stash(char *stash)

@@ -11,7 +11,7 @@
 # Extras
 **/main.c
 **/ft_testers.c
-**/test.txt
+**/*.txt
 
 # IDE
 .idea
