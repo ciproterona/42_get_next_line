@@ -6,7 +6,7 @@
 /*   By: eroque-d <eroque-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/14 15:21:25 by eroque-d          #+#    #+#             */
-/*   Updated: 2026/06/30 19:54:57 by eroque-d         ###   ########.fr       */
+/*   Updated: 2026/07/01 14:21:08 by eroque-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*append_buffer(int fd, char *stash, char *buffer, size_t size)
 {
-	int	bytes_read;
+	size_t	bytes_read;
 
 	bytes_read = 1;
 	while (bytes_read > 0)
@@ -42,8 +42,6 @@ static char	*read_and_stash(int fd, char *stash)
 	if (stash && ft_strchr(stash, '\n'))
 		return (stash);
 	size = BUFFER_SIZE;
-	if (size == 1)
-		size = 16;
 	buffer = malloc(size + 1);
 	if (!buffer)
 	{
@@ -57,9 +55,9 @@ static char	*read_and_stash(int fd, char *stash)
 
 static char	*extract_line(char *stash)
 {
-	int		count;
-	int		i;
-	char	*buffer;
+	size_t		count;
+	size_t		i;
+	char		*buffer;
 
 	if (!stash || !*stash)
 		return (NULL);
@@ -83,9 +81,9 @@ static char	*extract_line(char *stash)
 
 static char	*clean_stash(char *stash)
 {
-	int		i;
-	int		j;
-	char	*buffer;
+	size_t		i;
+	size_t		j;
+	char		*buffer;
 
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
