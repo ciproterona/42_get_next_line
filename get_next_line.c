@@ -6,7 +6,7 @@
 /*   By: eroque-d <eroque-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/14 15:21:25 by eroque-d          #+#    #+#             */
-/*   Updated: 2026/07/01 14:21:08 by eroque-d         ###   ########.fr       */
+/*   Updated: 2026/07/01 15:05:48 by eroque-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,28 @@
 
 static char	*append_buffer(int fd, char *stash, char *buffer, size_t size)
 {
-	size_t	bytes_read;
+	ssize_t	bytes_read;
+	size_t	stash_len;
 
-	bytes_read = 1;
+	stash_len = 0;
+	if (stash)
+		stash_len = ft_strlen(stash);
+	bytes_read = read(fd, buffer, size);
 	while (bytes_read > 0)
 	{
-		bytes_read = read(fd, buffer, size);
-		if (bytes_read == -1)
-			return (free(stash), NULL);
-		if (bytes_read == 0)
-			break ;
 		buffer[bytes_read] = '\0';
-		stash = ft_strjoin_gnl(stash, buffer);
+		stash = ft_strjoin_gnl(stash, stash_len, buffer, bytes_read);
 		if (!stash)
 			return (NULL);
+		stash_len += bytes_read;
 		if (ft_strchr(buffer, '\n'))
 			break ;
+		bytes_read = read(fd, buffer, size);
+	}
+	if (bytes_read == -1)
+	{
+		free(stash);
+		return (NULL);
 	}
 	return (stash);
 }

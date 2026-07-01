@@ -6,17 +6,14 @@
 /*   By: eroque-d <eroque-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/14 15:21:39 by eroque-d          #+#    #+#             */
-/*   Updated: 2026/06/30 20:01:25 by eroque-d         ###   ########.fr       */
+/*   Updated: 2026/07/01 15:04:57 by eroque-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*ft_strjoin_gnl(char *s1, char const *s2)
+char	*ft_strjoin_gnl(char *s1, size_t s1_len, char const *s2, size_t s2_len)
 {
-	size_t	s1_size;
-	size_t	s2_size;
-	size_t	str_total;
 	char	*str;
 
 	if (!s1)
@@ -25,18 +22,17 @@ char	*ft_strjoin_gnl(char *s1, char const *s2)
 		if (!s1)
 			return (NULL);
 		s1[0] = '\0';
+		s1_len = 0;
 	}
-	if (!s2)
-		return (NULL);
-	s1_size = ft_strlen(s1);
-	s2_size = ft_strlen(s2);
-	str_total = s1_size + s2_size + 1;
-	str = malloc(str_total);
+	str = malloc(s1_len + s2_len + 1);
 	if (!str)
+	{
+		free(s1);
 		return (NULL);
-	ft_memcpy(str, s1, s1_size);
-	ft_memcpy(str + s1_size, s2, s2_size);
-	str[s1_size + s2_size] = '\0';
+	}
+	ft_memcpy(str, s1, s1_len);
+	ft_memcpy(str + s1_len, s2, s2_len);
+	str[s1_len + s2_len] = '\0';
 	free(s1);
 	return (str);
 }

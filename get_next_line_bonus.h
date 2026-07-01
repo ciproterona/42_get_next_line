@@ -6,7 +6,7 @@
 /*   By: eroque-d <eroque-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/14 15:21:30 by eroque-d          #+#    #+#             */
-/*   Updated: 2026/06/30 19:58:30 by eroque-d         ###   ########.fr       */
+/*   Updated: 2026/07/01 15:04:48 by eroque-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 char	*get_next_line(int fd);
 
-char	*ft_strjoin_gnl(char *s1, char const *s2);
+char	*ft_strjoin_gnl(char *s1, size_t s1_len, char const *s2, size_t s2_len);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
