@@ -32,7 +32,7 @@ The core challenge of `get_next_line` is managing an arbitrary `BUFFER_SIZE` whi
 The strategy selected relies on a **Static Accumulator (Stash)** combined with a **Strict $O(1)$ Buffer Search** optimization:
 
 1. **Static Persistence:** A `static char *` pointer preserves data across multiple function calls. If a `read()` operation fetches more characters than a single line needs, the leftover bytes stay in the static memory for the next call.
-2. **Buffer-Only Search ($O(1)$ Optimization):** To prevent performance drops and **TIMEOUT** errors on huge lines (especially with `BUFFER_SIZE=1`), the algorithm avoids scanning the entire growing stash for a `\n` inside the loop. Instead, it checks the stash once at entry, and during the read loop, it scans **only the newly read buffer block** via `ft_strchr(buffer, '\n')`.
+2. **Localized Buffer Search ($O(\text{BUFFER\_SIZE})$ Optimization):** To prevent performance drops and **TIMEOUT** errors on huge lines (especially with `BUFFER_SIZE=1`), the algorithm avoids scanning the entire growing stash for a `\n` inside the loop. Instead, it checks the stash once at entry, and during the read loop, it scans **only the newly read buffer block** via `ft_strchr(buffer, '\n')`. This keeps the overall concatenation and search process linear, achieving **$O(N)$ time complexity** relative to the line size.
 3. **Data Segregation:** Once a newline or EOF is flagged:
    - `extract_line` copies everything up to `\n` into a new string to be returned to the user.
    - `clean_stash` frees the old block and reallocates the static pointer containing only the trailing bytes.
